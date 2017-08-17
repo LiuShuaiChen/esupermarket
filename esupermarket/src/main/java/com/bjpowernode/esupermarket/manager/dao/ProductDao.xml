@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjpowernode.esupermarket.manager.dao.ProductDao">
+
+	<!-- void insert(Product product); -->
+	<insert id="insert">
+		insert into tbl_product
+		(productNo,title,price,sellPoint,status,image1,image2,image3,image4,image5)
+  		values 
+  		(#{productNo},#{title},#{price},#{sellPoint},#{status},#{image1},#{image2},#{image3},#{image4},#{image5})
+	</insert>
+
+	<!--void delete(Integer id); -->
+	<delete id="delete">
+		delete from tbl_product where id = #{id}
+	</delete>
+
+	<!-- void update(Product product); -->
+	<update id="update">
+		update 
+			tbl_product 
+		set
+			productNo = #{productNo}, title = #{title}, price = #{price}, sellPoint = #{sellPoint}, status = #{status},image1 = #{image1},image2 = #{image2},image3 = #{image3},image4 = #{image4},image5 = #{image5}
+		where 
+			id = #{id}
+	</update>
+	
+	<!-- Product findById(Integer id); -->
+	<select id="findById" resultType="product">
+		select 
+			id,productNo,title,price,sellPoint,status,image1,image2,image3,image4,image5
+		from 
+			tbl_product
+		where
+			id = #{id}
+	</select>
+	
+	<!-- Long getTotal(ProductCondition condition); -->
+	<select id="getTotal" resultType="long">
+		select
+			count(id)
+		from
+			tbl_product
+		<where>
+			<if test="productNo != null and productNo !=''">
+				and productNo like '%'#{productNo}'%'
+			</if>
+			
+			<if test="title != null and title !=''">
+				and title like '%'#{title}'%'
+			</if>
+			
+			<if test="price > 0">
+				and price = #{price}
+			</if>
+			
+			<if test="sellPoint != null and sellPoint !=''">
+				and sellPoint like '%'#{sellPoint}'%'
+			</if>
+			
+			<if test="status != null and status !=''">
+				and status like '%'#{status}'%'
+			</if>
+
+		</where>
+			limit #{pageNo}, #{pageSize}
+	</select>
+	
+	<!-- List<Product> findByCon(ProductCondition condition); -->
+	<select id="findByCon" parameterType="ProductCondition" resultType="Product">
+		select
+			id,productNo,title,price,sellPoint,status,image1,image2,image3,image4,image5
+		from
+			tbl_product
+		<where>
+			<if test="productNo != null and productNo !=''">
+				and productNo like '%'#{productNo}'%'
+			</if>
+			
+			<if test="title != null and title !=''">
+				and title like '%'#{title}'%'
+			</if>
+			
+			<if test="price > 0">
+				and price = #{price}
+			</if>
+			
+			<if test="sellPoint != null and sellPoint !=''">
+				and sellPoint like '%'#{sellPoint}'%'
+			</if>
+			
+			<if test="status != null and status !=''">
+				and status like '%'#{status}'%'
+			</if>
+		</where>
+			limit #{pageNo}, #{pageSize}
+	</select>
+	
+</mapper>

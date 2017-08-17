@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<!-- 配置spring事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 数据源 -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 配置事务通知 -->
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- 对业务层所有方法添加事务，除了以get、find、select开始的 -->
+			<tx:method name="*" isolation="DEFAULT" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" />
+			<!-- 查询操作没有必要开启事务，给只读事务添加一个属性read-only -->
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="select*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- 配置切面 -->
+	<aop:config>
+		<!-- 指定切入点pointcut表达式：execution(* com.bjpowernode.esupermarket.service.*.*(..)) 
+			execution中参数:*表示任何返回值 execution中参数:com.bjpowernode.esupermarket.service包 
+			execution中参数:.*该包中的类 execution中参数:.*该包中的方法 execution中参数:(..)该方法中的参数 -->
+		<aop:advisor advice-ref="transactionAdvice"
+			pointcut="execution(* com.bjpowernode.esupermarket.manager.service.*.*(..))" />
+	</aop:config>
+</beans>
