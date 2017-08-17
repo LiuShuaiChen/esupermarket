@@ -1,7 +1,5 @@
 package com.bjpowernode.esupermarket.manager.service;
 
-import java.util.List;
-
 import com.bjpowernode.esupermarket.manager.domain.PaginationVO;
 import com.bjpowernode.esupermarket.manager.domain.Product;
 import com.bjpowernode.esupermarket.manager.domain.ProductCondition;
