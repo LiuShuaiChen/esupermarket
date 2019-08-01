@@ -12,6 +12,9 @@
 	<!-- void update(Customer customer); -->
 
 	<!-- Customer findById(Integer id); -->
-	
-	
+
+
+	<select id="findById" resultType="com.bjpowernode.esupermarket.manager.domain.Customer">
+		select * from Customer;
+	</select>
 </mapper>
